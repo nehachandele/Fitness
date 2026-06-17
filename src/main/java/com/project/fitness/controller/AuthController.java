@@ -16,15 +16,12 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class AuthController {
-    private final UserService userService;
+private final UserService userService;
 
 
 @PostMapping("/register")
 public UserResponse register(@RequestBody RegisterRequest registerRequest) {
-    User saved = userService.register(registerRequest);
 
-    System.out.println(saved.getEmail());
-
-    return saved;
+    return userService.register(registerRequest);
 }
 }
