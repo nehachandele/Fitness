@@ -41,7 +41,7 @@ public class UserService {
     return mapToResponse(savedUser);
   }
 
-  private UserResponse mapToResponse(User savedUser) {
+  public UserResponse mapToResponse(User savedUser) {
     UserResponse response = new UserResponse();
     response.setId(savedUser.getId());
     response.setFirstName(savedUser.getFirstName());

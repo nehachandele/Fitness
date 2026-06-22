@@ -1,4 +1,4 @@
-package com.project.fitness.controller;
+package com.project.fitness.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    String username;
-    String password;
+    private String email;
+    private String password;
 
 
 }

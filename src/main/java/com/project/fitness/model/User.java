@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -32,6 +33,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     private String firstName;
+    @Column(unique = true)
     private String email;
     private String password;
     private String lastName;
