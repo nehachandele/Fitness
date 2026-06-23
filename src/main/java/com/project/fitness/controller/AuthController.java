@@ -39,9 +39,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication;
+       
         try {
-            User user = userRepository.findByEmail(loginRequest.getClass());
+            User user = userRepository.findByEmail(loginRequest.getEmail());
             if (user == null)
                 return ResponseEntity.status(401).build();
 

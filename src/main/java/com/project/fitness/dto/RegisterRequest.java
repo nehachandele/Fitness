@@ -1,5 +1,7 @@
 package com.project.fitness.dto;
 
+import com.project.fitness.model.UserRole;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,4 +14,5 @@ public class RegisterRequest {
   private String lastName;  
   private String email;
   private String password;
+  private UserRole role;
 }

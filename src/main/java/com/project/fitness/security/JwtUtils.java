@@ -47,27 +47,13 @@ private final String jwtSecret =
         }
         return true;
     }
-     private Key key(){
-        return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
-        
-     }
-
-     public static String getUsernameFromToken(String jwt) throws JwtException, IllegalArgumentException {
-     try {
-        try {
-            return Jwts.parser().verifyWith((SecretKey)key()).build().parseSignedClaims(jwt).getPayload().getSubject();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+     private Key key(){ 
+        return Keys.hmacShaKeyFor( Decoders.BASE64.decode(jwtSecret) ); 
+    } 
+     public String getUsernameFromToken(String jwt) throws JwtException, IllegalArgumentException {
+         return Jwts.parser() .verifyWith((SecretKey) key()) .build() .parseSignedClaims(jwt) 
+         .getPayload() .getSubject(); 
         }
-     } catch (JwtException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-     } catch (IllegalArgumentException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-     }
-     }
 
      public String generateTokenFromUsername(String username) {
         // TODO Auto-generated method stub
