@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class GlobalExceptionHandler {
-   @ExceptionHandler(MethodArgumentNotValidException.class)
-   public ResponseEntity<Map<String,String>> handleValidationErros(MethodArgumentNotValidException exception){
-   Map<String,String> errors=new HashMap<>();
-   }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationErros(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+        return ResponseEntity.badRequest().body(errors);
+    }
 
 }
