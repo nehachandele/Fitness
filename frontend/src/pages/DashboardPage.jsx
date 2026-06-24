@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 
 import { getUser } from "../utils/auth";
+import AppLayout from "../components/layout/AppLayout";
 
 const DashboardPage = () => {
   const user = getUser();
@@ -44,6 +45,7 @@ const DashboardPage = () => {
   ];
 
   return (
+    <AppLayout>
     <div
       className="
       min-h-screen
@@ -300,6 +302,7 @@ const DashboardPage = () => {
         </button>
       </motion.div>
     </div>
+    </AppLayout>
   );
 };
 
