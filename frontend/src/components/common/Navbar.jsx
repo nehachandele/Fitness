@@ -43,18 +43,20 @@ const Navbar = () => {
             Register
           </Link>
 
-          <button
-            className="
-            bg-white
-            text-[#23084D]
-            px-4
-            py-2
-            rounded-xl
-            font-semibold
-          "
-          >
-            Login
-          </button>
+         <Link to="/login">
+  <button
+    className="
+    bg-white
+    text-[#23084D]
+    px-4
+    py-2
+    rounded-xl
+    font-semibold
+    "
+  >
+    Login
+  </button>
+</Link>
         </div>
       </div>
     </nav>

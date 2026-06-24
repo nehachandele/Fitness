@@ -5,12 +5,16 @@ import heroImg from './assets/hero.png'
 import './App.css'
 import AppRoutes from './routes/AppRoutes'
 
+import { ToastContainer } from 'react-toastify'
+
 function App() {
   const [count, setCount] = useState(0)
 
   return (
 <>
-<AppRoutes />;
+<AppRoutes />
+<ToastContainer position='top-right' autoClose={3000} hideProgressBar={false} newestOnTop pauseOnHover theme='light'/>
+
 </>
   )
 }

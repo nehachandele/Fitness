@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
+import { toast} from "react-toastify";
 
 const RegisterPage = () => {
 
@@ -25,8 +26,24 @@ const RegisterPage = () => {
     };
 
     const handleSubmit = async (e) => {
-
         e.preventDefault();
+
+        if (!formData.email.trim()) {
+            toast.error("📧 Email is required");
+            return;
+        }
+
+        if (!formData.password.trim()) {
+            toast.error("🔒 Password is required");
+            return;
+        }
+
+        if (formData.password.length < 6) {
+            toast.warning(
+                "Password must be at least 6 characters"
+            );
+            return;
+        }
 
         try {
 
@@ -34,7 +51,9 @@ const RegisterPage = () => {
 
             await registerUser(formData);
 
-            setMessage("Registration Successful");
+            toast.success(
+                " Registration Successful!"
+            );
 
             setFormData({
                 firstName: "",
@@ -46,9 +65,9 @@ const RegisterPage = () => {
 
         } catch (error) {
 
-            setMessage(
+            toast.error(
                 error.response?.data ||
-                "Registration Failed"
+                "❌ Registration Failed"
             );
 
         } finally {
@@ -199,11 +218,7 @@ focus:border-[#23084D]
 
                 </form>
 
-                {message && (
-                    <p className="mt-4 text-center">
-                        {message}
-                    </p>
-                )}
+               
 
             </div>
         </div>
