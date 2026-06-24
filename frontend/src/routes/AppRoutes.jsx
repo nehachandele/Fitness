@@ -7,6 +7,7 @@ import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
 import ActivitiesPage from "../pages/ActivitiesPage";
 import RecommendationsPage from "../pages/RecommendationsPage";
+import ProfilePage from "../pages/ProfilePage";
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -28,6 +29,10 @@ const AppRoutes = () => {
 <Route
   path="/recommendations"
   element={<RecommendationsPage />}
+/>
+<Route
+  path="/profile"
+  element={<ProfilePage />}
 />
 
     </Routes>
