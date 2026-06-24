@@ -3,138 +3,211 @@ import { registerUser } from "../services/authService";
 
 const RegisterPage = () => {
 
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    role: "USER",
-  });
-
-  const [message, setMessage] = useState("");
-
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-
-  };
-
-  const handleSubmit = async (e) => {
-
-    e.preventDefault();
-
-    try {
-
-      setLoading(true);
-
-      await registerUser(formData);
-
-      setMessage("Registration Successful");
-
-      setFormData({
+    const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
         email: "",
         password: "",
         role: "USER",
-      });
+    });
 
-    } catch (error) {
+    const [message, setMessage] = useState("");
 
-      setMessage(
-        error.response?.data ||
-          "Registration Failed"
-      );
+    const [loading, setLoading] = useState(false);
 
-    } finally {
+    const handleChange = (e) => {
 
-      setLoading(false);
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
 
-    }
-  };
+    };
 
-  return (
-    <div className="min-h-screen flex justify-center items-center bg-gray-100">
+    const handleSubmit = async (e) => {
 
-      <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md">
+        e.preventDefault();
 
-        <h2 className="text-3xl font-bold mb-6 text-center">
-          Create Account
-        </h2>
+        try {
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-4"
+            setLoading(true);
+
+            await registerUser(formData);
+
+            setMessage("Registration Successful");
+
+            setFormData({
+                firstName: "",
+                lastName: "",
+                email: "",
+                password: "",
+                role: "USER",
+            });
+
+        } catch (error) {
+
+            setMessage(
+                error.response?.data ||
+                "Registration Failed"
+            );
+
+        } finally {
+
+            setLoading(false);
+
+        }
+    };
+
+    return (
+        <div
+            className="
+ min-h-screen
+ flex
+ justify-center
+ items-center
+ px-4
+ bg-gradient-to-br
+ from-white
+ via-[#F8F5FF]
+ to-[#EDE9FE]
+ "
         >
 
-          <input
-            name="firstName"
-            placeholder="First Name"
-            className="w-full border p-3 rounded"
-            value={formData.firstName}
-            onChange={handleChange}
-          />
+            <div
+                className="
+ bg-white
+ w-full
+ max-w-md
+ rounded-3xl
+ p-8
+ shadow-[0_10px_30px_rgba(35,8,77,0.08)]
+ "
+            >
+                <h2
+                    className="
+ text-3xl
+ font-bold
+ text-center
+ text-[#23084D]
+ "
+                >
+                    Create Account
+                </h2>
 
-          <input
-            name="lastName"
-            placeholder="Last Name"
-            className="w-full border p-3 rounded"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                >
 
-          <input
-            name="email"
-            placeholder="Email"
-            className="w-full border p-3 rounded"
-            value={formData.email}
-            onChange={handleChange}
-          />
+                    <input
+                        name="firstName"
+                        placeholder="First Name"
+                        className="
+w-full
+p-3
+rounded-xl
+border
+border-violet-200
+focus:outline-none
+focus:border-[#23084D]
+"
+                        value={formData.firstName}
+                        onChange={handleChange}
+                    />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="w-full border p-3 rounded"
-            value={formData.password}
-            onChange={handleChange}
-          />
+                    <input
+                        name="lastName"
+                        placeholder="Last Name"
+                        className="
+w-full
+p-3
+rounded-xl
+border
+border-violet-200
+focus:outline-none
+focus:border-[#23084D]
+"
+                        value={formData.lastName}
+                        onChange={handleChange}
+                    />
 
-          <select
-            name="role"
-            className="w-full border p-3 rounded"
-            value={formData.role}
-            onChange={handleChange}
-          >
-            <option value="USER">USER</option>
-            <option value="ADMIN">ADMIN</option>
-          </select>
+                    <input
+                        name="email"
+                        placeholder="Email"
+                        className="
+w-full
+p-3
+rounded-xl
+border
+border-violet-200
+focus:outline-none
+focus:border-[#23084D]
+"
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
 
-          <button
-            className="w-full bg-purple-600 text-white py-3 rounded-lg"
-            disabled={loading}
-          >
-            {loading
-              ? "Registering..."
-              : "Register"}
-          </button>
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Password"
+                        className="
+w-full
+p-3
+rounded-xl
+border
+border-violet-200
+focus:outline-none
+focus:border-[#23084D]
+"
+                        value={formData.password}
+                        onChange={handleChange}
+                    />
 
-        </form>
+                    <select
+                        name="role"
+                        className="
+w-full
+p-3
+rounded-xl
+border
+border-violet-200
+focus:outline-none
+focus:border-[#23084D]
+"
+                        value={formData.role}
+                        onChange={handleChange}
+                    >
+                        <option value="USER">USER</option>
+                        <option value="ADMIN">ADMIN</option>
+                    </select>
 
-        {message && (
-          <p className="mt-4 text-center">
-            {message}
-          </p>
-        )}
+                    <button
+                        disabled={loading}
+                        className="
+ w-full
+ bg-[#23084D]
+ hover:bg-[#3B1175]
+ text-white
+ py-3
+ rounded-xl
+ transition
+ "
+                    >
+                        {loading ? "Registering..." : "Register"}
+                    </button>
 
-      </div>
-    </div>
-  );
+                </form>
+
+                {message && (
+                    <p className="mt-4 text-center">
+                        {message}
+                    </p>
+                )}
+
+            </div>
+        </div>
+    );
 };
 
 export default RegisterPage;

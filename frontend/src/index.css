@@ -1,1 +1,25 @@
 @import "tailwindcss";
+@import "tailwindcss";
+
+:root{
+  --primary:#23084D;
+  --primary-hover:#3B1175;
+
+  --secondary:#6D28D9;
+
+  --violet-soft:#EDE9FE;
+  --violet-bg:#F8F5FF;
+
+  --white:#FFFFFF;
+
+  --success:#22C55E;
+  --accent:#06B6D4;
+
+  --text-primary:#1E1B2E;
+  --text-secondary:#6B7280;
+}
+
+body{
+  background: var(--violet-bg);
+  color: var(--text-primary);
+}
