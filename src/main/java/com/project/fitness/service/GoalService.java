@@ -2,12 +2,13 @@ package com.project.fitness.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.project.fitness.dto.GoalRequest;
+import com.project.fitness.dto.GoalResponse;
 import com.project.fitness.model.Goal;
-import com.project.fitness.model.GoalStatus;
 import com.project.fitness.repository.GoalRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -15,64 +16,75 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class GoalService {
-    private final  GoalRepository goalRepository;
-    public Goal createGoal(GoalRequest  request){
-         Goal goal = new Goal();
 
-        goal.setUserId(request.getUserId());
+    private final GoalRepository goalRepository;
 
-        goal.setGoalType(
-                request.getGoalType());
+    public GoalResponse createGoal(
+            GoalRequest request) {
 
-        goal.setTargetValue(
-                request.getTargetValue());
+        Goal goal = Goal.builder()
+                .userId(request.getUserId())
+                .title(request.getTitle())
+                .targetValue(request.getTargetValue())
+                .currentValue(0)
+                .completed(false)
+                .type(request.getType())
+                .deadline(request.getDeadline())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
 
-        goal.setCurrentValue(0);
+        goalRepository.save(goal);
 
-        goal.setStatus(
-                GoalStatus.IN_PROGRESS);
-
-        goal.setCreatedAt(
-                LocalDateTime.now());
-
-        goal.setUpdatedAt(
-                LocalDateTime.now());
-        return goalRepository.save(goal);
+        return mapToResponse(goal);
     }
-     public List<Goal> getUserGoals(
+
+    public List<GoalResponse> getUserGoals(
             String userId) {
 
-        return goalRepository.findByUserId(
-                userId);
+        return goalRepository
+                .findByUserId(userId)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
- public Goal updateGoalProgress(
+
+    public GoalResponse updateProgress(
             String goalId,
-            Integer currentValue) {
+            Integer progress) {
 
         Goal goal =
                 goalRepository.findById(goalId)
                         .orElseThrow();
 
-        goal.setCurrentValue(
-                currentValue);
+        goal.setCurrentValue(progress);
 
-        if (currentValue >=
-                goal.getTargetValue()) {
+        if (goal.getCurrentValue()
+                >= goal.getTargetValue()) {
 
-            goal.setStatus(
-                    GoalStatus.COMPLETED);
+            goal.setCompleted(true);
         }
 
         goal.setUpdatedAt(
                 LocalDateTime.now());
 
-        return goalRepository.save(goal);
+        goalRepository.save(goal);
+
+        return mapToResponse(goal);
     }
 
-    public void deleteGoal(
-            String goalId) {
+    private GoalResponse mapToResponse(
+            Goal goal) {
 
-        goalRepository.deleteById(
-                goalId);
+        return new GoalResponse(
+                goal.getId(),
+                goal.getUserId(),
+                goal.getTitle(),
+                goal.getTargetValue(),
+                goal.getCurrentValue(),
+                goal.getType(),
+                goal.getCompleted(),
+                goal.getDeadline()
+        );
     }
 }

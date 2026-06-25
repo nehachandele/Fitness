@@ -5,6 +5,7 @@ import LandingPage from '../pages/LandingPage'
 import RegiseterPage from '../pages/RegisterPage'
 import LoginPage from "../pages/LoginPage";
 import DashboardPage from "../pages/DashboardPage";
+import GoalsPage from "../pages/GoalsPage";
 import ActivitiesPage from "../pages/ActivitiesPage";
 import RecommendationsPage from "../pages/RecommendationsPage";
 import ProfilePage from "../pages/ProfilePage";
@@ -34,7 +35,10 @@ const AppRoutes = () => {
   path="/profile"
   element={<ProfilePage />}
 />
-
+<Route
+  path="/goals"
+  element={<GoalsPage />}
+/>
     </Routes>
     </BrowserRouter>
     

@@ -1,27 +1,36 @@
 package com.project.fitness.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import org.springframework.data.annotation.Id;
+
+import lombok.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@Builder
+
 public class Goal {
+
     @Id
     private String id;
-    public String userId;
-    private GoalType goalType;
+
+    private String userId;
+
+    private String title;
+
     private Integer targetValue;
+
     private Integer currentValue;
-    private GoalStatus status;
+
+    private GoalType type;
+
+    private Boolean completed;
+
+    private LocalDateTime deadline;
+
     private LocalDateTime createdAt;
+
     private LocalDateTime updatedAt;
-
-
 }

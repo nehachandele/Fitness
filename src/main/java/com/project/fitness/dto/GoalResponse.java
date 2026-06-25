@@ -2,12 +2,9 @@ package com.project.fitness.dto;
 
 import java.time.LocalDateTime;
 
-import com.project.fitness.model.GoalStatus;
 import com.project.fitness.model.GoalType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -18,15 +15,15 @@ public class GoalResponse {
 
     private String userId;
 
-    private GoalType goalType;
+    private String title;
 
     private Integer targetValue;
 
     private Integer currentValue;
 
-    private GoalStatus status;
+    private GoalType type;
 
-    private LocalDateTime createdAt;
+    private Boolean completed;
 
-    private LocalDateTime updatedAt;
+    private LocalDateTime deadline;
 }

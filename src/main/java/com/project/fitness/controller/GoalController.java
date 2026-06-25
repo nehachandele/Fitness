@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.project.fitness.dto.GoalRequest;
-import com.project.fitness.model.Goal;
+import com.project.fitness.dto.GoalResponse;
 import com.project.fitness.service.GoalService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,39 +19,32 @@ public class GoalController {
     private final GoalService goalService;
 
     @PostMapping
-    public ResponseEntity<Goal> createGoal(
+    public ResponseEntity<GoalResponse>
+    createGoal(
             @RequestBody GoalRequest request) {
 
         return ResponseEntity.ok(
                 goalService.createGoal(request));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Goal>> getUserGoals(
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<GoalResponse>>
+    getGoals(
             @PathVariable String userId) {
 
         return ResponseEntity.ok(
                 goalService.getUserGoals(userId));
     }
 
-    @PutMapping("/{goalId}")
-    public ResponseEntity<Goal> updateGoal(
+    @PutMapping("/{goalId}/{progress}")
+    public ResponseEntity<GoalResponse>
+    updateGoalProgress(
             @PathVariable String goalId,
-            @RequestParam Integer currentValue) {
+            @PathVariable Integer progress) {
 
         return ResponseEntity.ok(
-                goalService.updateGoalProgress(
+                goalService.updateProgress(
                         goalId,
-                        currentValue));
-    }
-
-    @DeleteMapping("/{goalId}")
-    public ResponseEntity<Void> deleteGoal(
-            @PathVariable String goalId) {
-
-        goalService.deleteGoal(goalId);
-
-        return ResponseEntity.noContent()
-                .build();
+                        progress));
     }
 }

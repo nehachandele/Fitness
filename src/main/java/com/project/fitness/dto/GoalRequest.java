@@ -1,10 +1,10 @@
 package com.project.fitness.dto;
 
+import java.time.LocalDateTime;
+
 import com.project.fitness.model.GoalType;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -13,7 +13,11 @@ public class GoalRequest {
 
     private String userId;
 
-    private GoalType goalType;
+    private String title;
 
     private Integer targetValue;
+
+    private GoalType type;
+
+    private LocalDateTime deadline;
 }
