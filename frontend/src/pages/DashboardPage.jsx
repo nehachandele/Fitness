@@ -1,307 +1,344 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+
+import AppLayout from "../components/layout/AppLayout";
+
+import WeeklyCaloriesChart from "../components/charts/WeeklyCaloriesChart";
+import ActivityPieChart from "../components/charts/ActivityPieChart";
+
+import GoalProgress from "../components/dashboard/GoalProgress";
+
+import {
+  generateWeeklyCalories,
+  calculateGoalProgress,
+} from "../utils/dashboardUtils";
+
 import {
   FaRunning,
   FaFire,
+  FaClock,
   FaBullseye,
-  FaChartLine,
-  FaRobot,
 } from "react-icons/fa";
 
-import { getUser } from "../utils/auth";
-import AppLayout from "../components/layout/AppLayout";
+import { getActivities } from "../services/activityService";
 
 const DashboardPage = () => {
-  const user = getUser();
+  const [activities, setActivities] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    loadActivities();
+  }, []);
+
+  const loadActivities = async () => {
+    try {
+      const data = await getActivities();
+      setActivities(data || []);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const totalActivities = activities.length;
+
+  const totalCalories = activities.reduce(
+    (sum, activity) =>
+      sum + (activity.caloriesBurned || 0),
+    0
+  );
+
+  const avgDuration =
+    activities.length > 0
+      ? Math.round(
+          activities.reduce(
+            (sum, activity) =>
+              sum + (activity.duration || 0),
+            0
+          ) / activities.length
+        )
+      : 0;
+
+  const weeklyData =
+    generateWeeklyCalories(activities);
+
+  const goal =
+    calculateGoalProgress(activities);
 
   const stats = [
     {
       title: "Activities",
-      value: "12",
+      value: totalActivities,
       icon: <FaRunning />,
-      bg: "bg-blue-50",
-      color: "text-blue-500",
+      color: "bg-violet-100",
     },
     {
       title: "Calories",
-      value: "2450",
+      value: totalCalories,
       icon: <FaFire />,
-      bg: "bg-orange-50",
-      color: "text-orange-500",
+      color: "bg-pink-100",
     },
     {
-      title: "Goals",
-      value: "85%",
+      title: "Avg Duration",
+      value: `${avgDuration}m`,
+      icon: <FaClock />,
+      color: "bg-blue-100",
+    },
+    {
+      title: "Goal",
+      value: `${goal.percentage}%`,
       icon: <FaBullseye />,
-      bg: "bg-green-50",
-      color: "text-green-500",
-    },
-    {
-      title: "Progress",
-      value: "+18%",
-      icon: <FaChartLine />,
-      bg: "bg-violet-50",
-      color: "text-[#23084D]",
+      color: "bg-green-100",
     },
   ];
 
+  const activityTypes = {};
+
+  activities.forEach((activity) => {
+    activityTypes[activity.type] =
+      (activityTypes[activity.type] || 0) + 1;
+  });
+
+  const pieData = Object.entries(
+    activityTypes
+  ).map(([key, value]) => ({
+    name: key,
+    value,
+  }));
+
+  const safePieData =
+    pieData.length > 0
+      ? pieData
+      : [
+          {
+            name: "No Data",
+            value: 1,
+          },
+        ];
+
+  const recentActivities = [...activities]
+    .sort(
+      (a, b) =>
+        new Date(b.startTime) -
+        new Date(a.startTime)
+    )
+    .slice(0, 5);
+
   return (
     <AppLayout>
-    <div
-      className="
-      min-h-screen
-      bg-gradient-to-br
-      from-white
-      via-[#F8F5FF]
-      to-[#EDE9FE]
-      p-4
-      md:p-6
-      "
-    >
-      {/* Hero Card */}
+      <div className="space-y-8">
 
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="
-        bg-gradient-to-r
-        from-[#23084D]
-        to-[#3B1175]
-        rounded-3xl
-        p-6
-        md:p-10
-        text-white
-        shadow-xl
-        "
-      >
-        <h2 className="text-3xl font-bold">
-          Welcome Back 👋
-        </h2>
+        {/* HEADER */}
 
-        <p className="mt-2 text-violet-100">
-          {user?.firstName} {user?.lastName}
-        </p>
-
-        <div className="mt-8">
-          <p className="text-violet-200">
-            Daily Goal
-          </p>
-
-          <div
-            className="
-            mt-3
-            bg-white/20
-            rounded-full
-            h-4
-            overflow-hidden
-            "
-          >
-            <div
-              className="
-              h-full
-              w-[70%]
-              bg-green-400
-              rounded-full
-              "
-            />
-          </div>
-
-          <p className="mt-2">
-            70% Completed
-          </p>
-        </div>
-      </motion.div>
-
-      {/* Stats */}
-
-      <div
-        className="
-        grid
-        grid-cols-2
-        lg:grid-cols-4
-        gap-4
-        mt-6
-        "
-      >
-        {stats.map((item, index) => (
-          <motion.div
-            whileHover={{
-              scale: 1.04,
-            }}
-            key={index}
-            className={`
-            ${item.bg}
-            p-5
-            rounded-3xl
-            shadow-lg
-            border
-            border-white
-            `}
-          >
-            <div
-              className={`
-              text-3xl
-              ${item.color}
-              `}
-            >
-              {item.icon}
-            </div>
-
-            <h3 className="mt-4 text-gray-500">
-              {item.title}
-            </h3>
-
-            <p
-              className="
-              text-2xl
-              font-bold
-              mt-1
-              "
-            >
-              {item.value}
-            </p>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* Activity Card */}
-
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="
-        mt-8
-        bg-white
-        rounded-3xl
-        p-6
-        shadow-lg
-        "
-      >
-        <h3
-          className="
-          text-xl
-          font-bold
-          text-[#23084D]
-          "
-        >
-          Today's Activity
-        </h3>
-
-        <div className="mt-6 space-y-4">
-          <div
-            className="
-            bg-blue-50
-            p-4
-            rounded-2xl
-            flex
-            justify-between
-            "
-          >
-            <div>
-              <h4 className="font-semibold">
-                Running
-              </h4>
-
-              <p className="text-sm text-gray-500">
-                45 Minutes
-              </p>
-            </div>
-
-            <span
-              className="
-              text-blue-500
-              font-bold
-              "
-            >
-              320 cal
-            </span>
-          </div>
-
-          <div
-            className="
-            bg-green-50
-            p-4
-            rounded-2xl
-            flex
-            justify-between
-            "
-          >
-            <div>
-              <h4 className="font-semibold">
-                Walking
-              </h4>
-
-              <p className="text-sm text-gray-500">
-                20 Minutes
-              </p>
-            </div>
-
-            <span
-              className="
-              text-green-500
-              font-bold
-              "
-            >
-              110 cal
-            </span>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* AI Coach */}
-
-      <motion.div
-        whileHover={{
-          scale: 1.01,
-        }}
-        className="
-        mt-8
-        bg-gradient-to-r
-        from-violet-100
-        to-pink-100
-        rounded-3xl
-        p-6
-        shadow-lg
-        "
-      >
-        <div className="flex items-center gap-3">
-          <FaRobot
+        <div>
+          <h1
             className="
             text-3xl
-            text-[#23084D]
-            "
-          />
-
-          <h3
-            className="
-            text-xl
             font-bold
             text-[#23084D]
             "
           >
-            AI Fitness Coach
-          </h3>
+            Dashboard
+          </h1>
+
+          <p className="text-gray-500 mt-2">
+            Track your fitness progress
+            and achievements.
+          </p>
         </div>
 
-        <p className="mt-4 text-gray-700">
-          Great consistency this week.
-          Increase your running duration
-          by 10 minutes to improve stamina.
-        </p>
+        {/* LOADING */}
 
-        <button
-          className="
-          mt-5
-          bg-[#23084D]
-          text-white
-          px-5
-          py-3
-          rounded-xl
-          "
-        >
-          View Recommendations
-        </button>
-      </motion.div>
-    </div>
+        {loading ? (
+          <div
+            className="
+            bg-white
+            rounded-3xl
+            p-10
+            text-center
+            shadow-lg
+            "
+          >
+            Loading Dashboard...
+          </div>
+        ) : (
+          <>
+            {/* STATS */}
+
+            <div
+              className="
+              grid
+              grid-cols-2
+              lg:grid-cols-4
+              gap-5
+              "
+            >
+              {stats.map(
+                (item, index) => (
+                  <div
+                    key={index}
+                    className="
+                    bg-white
+                    rounded-3xl
+                    p-5
+                    shadow-lg
+                    hover:shadow-xl
+                    transition-all
+                    duration-300
+                    "
+                  >
+                    <div
+                      className={`
+                      w-12
+                      h-12
+                      rounded-xl
+                      flex
+                      items-center
+                      justify-center
+                      text-xl
+                      ${item.color}
+                      `}
+                    >
+                      {item.icon}
+                    </div>
+
+                    <h3
+                      className="
+                      mt-4
+                      text-gray-500
+                      "
+                    >
+                      {item.title}
+                    </h3>
+
+                    <p
+                      className="
+                      text-3xl
+                      font-bold
+                      text-[#23084D]
+                      "
+                    >
+                      {item.value}
+                    </p>
+                  </div>
+                )
+              )}
+            </div>
+
+            {/* CHARTS */}
+
+            <div
+              className="
+              grid
+              lg:grid-cols-2
+              gap-6
+              "
+            >
+              <WeeklyCaloriesChart
+                data={weeklyData}
+              />
+
+              <ActivityPieChart
+                data={safePieData}
+              />
+            </div>
+
+            {/* GOAL */}
+
+            <GoalProgress
+              current={goal.current}
+              goal={goal.goal}
+              percentage={
+                goal.percentage
+              }
+            />
+
+            {/* RECENT ACTIVITIES */}
+
+            <div
+              className="
+              bg-white
+              rounded-3xl
+              p-6
+              shadow-lg
+              "
+            >
+              <h2
+                className="
+                text-xl
+                font-bold
+                text-[#23084D]
+                mb-5
+                "
+              >
+                Recent Activities
+              </h2>
+
+              {recentActivities.length === 0 ? (
+                <div
+                  className="
+                  text-center
+                  py-8
+                  text-gray-500
+                  "
+                >
+                  No activities found.
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {recentActivities.map(
+                    (activity) => (
+                      <div
+                        key={activity.id}
+                        className="
+                        flex
+                        justify-between
+                        items-center
+                        border-b
+                        pb-3
+                        "
+                      >
+                        <div>
+                          <h3
+                            className="
+                            font-semibold
+                            text-[#23084D]
+                            "
+                          >
+                            {activity.type}
+                          </h3>
+
+                          <p
+                            className="
+                            text-sm
+                            text-gray-500
+                            "
+                          >
+                            {activity.duration}
+                            min
+                          </p>
+                        </div>
+
+                        <div
+                          className="
+                          text-[#EC4899]
+                          font-bold
+                          "
+                        >
+                          {
+                            activity.caloriesBurned
+                          }
+                          cal
+                        </div>
+                      </div>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </AppLayout>
   );
 };

@@ -18,23 +18,38 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+@Bean
+public SecurityFilterChain securityFilterChain(
+        HttpSecurity http
+) throws Exception {
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/users/**").permitAll()
-                        .requestMatchers(
-                                "/swagger-ui.html",
-                                "/swagger-ui/**",
-                                "/v3/api-docs/**",
-                                "/webjars/**")
-                        .permitAll().anyRequest().authenticated());
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    }
+    http
+        .cors(cors -> {})
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(authorizeRequests -> authorizeRequests
 
+                .requestMatchers("/api/admin/**")
+                .hasRole("ADMIN")
+
+                .requestMatchers("/api/users/**")
+                .permitAll()
+
+                .requestMatchers(
+                        "/swagger-ui.html",
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/webjars/**")
+                .permitAll()
+
+                .anyRequest()
+                .authenticated());
+
+    http.addFilterBefore(
+            jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
