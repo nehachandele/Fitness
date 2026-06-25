@@ -1,21 +1,27 @@
-import api from "./api";
+import axios from "axios";
 
-export const generateRecommendation = async (
-  recommendationData
-) => {
-  const response = await api.post(
-    "/api/recommendation/generate",
-    recommendationData
-  );
-
-  return response.data;
-};
+const API =
+  "http://localhost:8080/api/recommendation";
 
 export const getUserRecommendations =
   async (userId) => {
-    const response = await api.get(
-      `/api/recommendation/user/${userId}`
-    );
+
+    const response =
+      await axios.get(
+        `${API}/user/${userId}`
+      );
+
+    return response.data;
+  };
+
+export const generateRecommendation =
+  async (payload) => {
+
+    const response =
+      await axios.post(
+        `${API}/generate`,
+        payload
+      );
 
     return response.data;
   };

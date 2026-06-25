@@ -31,7 +31,8 @@ public SecurityFilterChain securityFilterChain(
                 .requestMatchers("/api/admin/**")
                 .hasRole("ADMIN")
 
-                .requestMatchers("/api/users/**")
+                .requestMatchers("/api/users/**", "/api/activities/**",
+                "/api/recommendation/**")
                 .permitAll()
 
                 .requestMatchers(

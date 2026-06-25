@@ -92,7 +92,7 @@ const ActivitiesPage = () => {
             formData.caloriesBurned
           ),
         startTime:
-          new Date().toISOString(),
+          new Date().toISOString().slice(0,19),
       };
 
       await createActivity(
