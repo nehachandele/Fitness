@@ -34,6 +34,8 @@ public SecurityFilterChain securityFilterChain(
                 .requestMatchers("/api/users/**", "/api/activities/**",
                 "/api/recommendation/**")
                 .permitAll()
+                .requestMatchers("/api/goals/**")
+                .permitAll()
 
                 .requestMatchers(
                         "/swagger-ui.html",
