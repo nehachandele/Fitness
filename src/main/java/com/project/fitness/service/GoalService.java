@@ -50,7 +50,7 @@ public class GoalService {
     }
 
     public GoalResponse updateProgress(
-            String goalId,
+            Long goalId,
             Integer progress) {
 
         Goal goal =

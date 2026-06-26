@@ -251,17 +251,24 @@ const GoalsPage = () => {
             />
 
             <button
-              disabled={
-                loading
-              }
-              className="
-              bg-[#23084D]
-              text-white
-              rounded-xl
-              "
-            >
-              Create
-            </button>
+disabled={loading}
+className="
+bg-gradient-to-r
+from-[#23084D]
+via-[#5B21B6]
+to-[#EC4899]
+text-white
+rounded-xl
+font-semibold
+transition-all
+duration-300
+hover:scale-[1.02]
+hover:shadow-xl
+disabled:opacity-60
+"
+>
+{loading ? "Creating..." : "Create Goal"}
+</button>
 
           </form>
 

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.project.fitness.model.Goal;
 
 public interface GoalRepository
-        extends JpaRepository<Goal, String> {
+        extends JpaRepository<Goal, Long> {
 
     List<Goal> findByUserId(String userId);
 

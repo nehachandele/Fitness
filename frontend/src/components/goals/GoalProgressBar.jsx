@@ -3,13 +3,10 @@ const GoalProgressBar = ({
   target,
 }) => {
 
-  const percentage =
-    Math.min(
-      Math.round(
-        (current / target) * 100
-      ),
-      100
-    );
+ const percentage =
+target > 0
+? Math.min(Math.round((current / target) * 100),100)
+: 0;
 
   return (
     <div>

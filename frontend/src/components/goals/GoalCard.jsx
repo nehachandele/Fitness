@@ -35,10 +35,7 @@ const GoalCard = ({
             text-[#23084D]
             "
           >
-            {goal.goalType.replace(
-              "_",
-              " "
-            )}
+           {goal.goalType?.replaceAll("_", " ")}
           </h3>
 
           <p
@@ -86,14 +83,13 @@ const GoalCard = ({
           font-semibold
 
           ${
-            goal.status ===
-            "COMPLETED"
+            goal.completed
               ? "bg-green-100 text-green-700"
               : "bg-violet-100 text-[#23084D]"
           }
           `}
         >
-          {goal.status}
+          {goal.completed ? "COMPLETED" : "IN PROGRESS"}
         </span>
 
       </div>

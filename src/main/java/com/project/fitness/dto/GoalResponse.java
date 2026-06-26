@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 public class GoalResponse {
 
-    private String id;
+    private Long id;
 
     private String userId;
 
