@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class ActivityService {
     private final ActivityRepository activityRepository;
     private final UserRepository userRepository;
+      private final GoalService goalService;
     public ActivityResponse trackActivity(ActivityRequest request) {
         User user = userRepository.findById(request.getUserId()).orElseThrow(()-> new RuntimeException("User not found"));
         Activity activity=Activity.builder()
@@ -31,6 +32,7 @@ public class ActivityService {
 
         .build();
     Activity  savedActivity  =activityRepository.save(activity);
+    goalService.updateGoalAfterActivity(savedActivity);
     return mapToResponse(savedActivity);
        
     }

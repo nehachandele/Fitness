@@ -39,7 +39,7 @@ public class GoalController {
     @PutMapping("/{goalId}/{progress}")
     public ResponseEntity<GoalResponse>
     updateGoalProgress(
-            @PathVariable String goalId,
+            @PathVariable Long goalId,
             @PathVariable Integer progress) {
 
         return ResponseEntity.ok(

@@ -1,5 +1,6 @@
 package com.project.fitness.service;
-
+import com.project.fitness.model.Activity;
+import com.project.fitness.model.GoalType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -87,4 +88,58 @@ public class GoalService {
                 goal.getDeadline()
         );
     }
+    public void updateGoalAfterActivity(Activity activity) {
+
+    List<Goal> goals =
+            goalRepository.findByUserId(
+                    activity.getUser().getId());
+
+    for (Goal goal : goals) {
+
+        switch (goal.getType()) {
+
+            case CALORIES:
+
+                goal.setCurrentValue(
+                        goal.getCurrentValue()
+                        + activity.getCaloriesBurned());
+
+                break;
+
+            case DURATION:
+
+                goal.setCurrentValue(
+                        goal.getCurrentValue()
+                        + activity.getDuration());
+
+                break;
+
+            case ACTIVITIES:
+
+                goal.setCurrentValue(
+                        goal.getCurrentValue() + 1);
+
+                break;
+
+            case MONTHLY_CALORIES:
+
+                goal.setCurrentValue(
+                        goal.getCurrentValue()
+                        + activity.getCaloriesBurned());
+
+                break;
+
+            default:
+                break;
+        }
+
+        if (goal.getCurrentValue()
+                >= goal.getTargetValue()) {
+
+            goal.setCompleted(true);
+        }
+
+        goalRepository.save(goal);
+    }
+}
 }

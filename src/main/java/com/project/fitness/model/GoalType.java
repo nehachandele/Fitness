@@ -5,6 +5,5 @@ public enum GoalType {
     CALORIES,
     ACTIVITIES,
     DURATION,
-    STEPS
-
+    MONTHLY_CALORIES
 }

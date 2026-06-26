@@ -34,7 +34,7 @@ public SecurityFilterChain securityFilterChain(
                 .requestMatchers("/api/users/**", "/api/activities/**",
                 "/api/recommendation/**")
                 .permitAll()
-                .requestMatchers("/api/goals/**")
+                .requestMatchers("/api/goals/**","/api/ai/**")
                 .permitAll()
 
                 .requestMatchers(

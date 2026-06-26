@@ -37,7 +37,7 @@ const GoalsPage = () => {
   const [formData, setFormData] =
     useState({
       goalType:
-        "DAILY_CALORIES",
+        "CALORIES",
       targetValue: "",
     });
 
@@ -86,15 +86,13 @@ const GoalsPage = () => {
 
         setLoading(true);
 
-        await createGoal({
-          userId: user.id,
-          goalType:
-            formData.goalType,
-          targetValue:
-            Number(
-              formData.targetValue
-            ),
-        });
+      await createGoal({
+    userId: user.id,
+    title: formData.goalType,
+    type: formData.goalType,
+    targetValue: Number(formData.targetValue),
+    deadline: null,
+});
 
         toast.success(
           "Goal Created"
@@ -102,7 +100,7 @@ const GoalsPage = () => {
 
         setFormData({
           goalType:
-            "DAILY_CALORIES",
+            "CALORIES",
           targetValue: "",
         });
 
@@ -212,21 +210,10 @@ const GoalsPage = () => {
               "
             >
 
-              <option value="DAILY_CALORIES">
-                Daily Calories
-              </option>
-
-              <option value="WEEKLY_ACTIVITIES">
-                Weekly Activities
-              </option>
-
-              <option value="DAILY_DURATION">
-                Daily Duration
-              </option>
-
-              <option value="MONTHLY_CALORIES">
-                Monthly Calories
-              </option>
+              <option value="CALORIES">Calories</option>
+<option value="ACTIVITIES">Activities</option>
+<option value="DURATION">Duration</option>
+<option value="MONTHLY_CALORIES">Monthly Calories</option>
 
             </select>
 
