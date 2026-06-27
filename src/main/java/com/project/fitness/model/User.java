@@ -36,26 +36,47 @@ public class User {
     @Column(unique = true)
     private String email;
 
-   
     private String password;
     private String lastName;
+    private Integer age;
+
+    private Double height;
+
+    private Double weight;
+
+    private String gender;
+
+    private String fitnessGoal;
+
+    private String experienceLevel;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role=UserRole.USER;
+    private UserRole role = UserRole.USER;
     @CreationTimestamp
     private LocalDateTime createdAt;
-    
+
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+    private String activityLevel;
 
-    @OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true)
+private String dietPreference;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Activity> activities=new ArrayList<>();
+    private List<Activity> activities = new ArrayList<>();
 
-    @OneToMany(mappedBy="user",cascade=CascadeType.ALL,orphanRemoval=true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<Recommendation> recommendations=new ArrayList<>();
+    private List<Recommendation> recommendations = new ArrayList<>();
 
+    public Double getBMI() {
 
+    if (height == null || weight == null || height == 0) {
+        return 0.0;
+    }
 
+    double heightInMeters = height / 100.0;
+
+    return weight / (heightInMeters * heightInMeters);
+}
 }

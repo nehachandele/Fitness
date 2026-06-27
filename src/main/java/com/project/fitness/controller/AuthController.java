@@ -14,6 +14,12 @@ import com.project.fitness.model.User;
 import com.project.fitness.security.JwtUtils;
 import com.project.fitness.service.UserService;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import com.project.fitness.dto.UserProfileRequest;
+import com.project.fitness.dto.UserProfileResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -43,4 +49,21 @@ public class AuthController {
         }
 
     }
+    @GetMapping("/profile/{userId}")
+public ResponseEntity<UserProfileResponse> getProfile(
+        @PathVariable String userId) {
+
+    return ResponseEntity.ok(
+            userService.getProfile(userId));
+}
+
+@PutMapping("/profile/{userId}")
+public ResponseEntity<UserProfileResponse> updateProfile(
+        @PathVariable String userId,
+        @RequestBody UserProfileRequest request) {
+
+    return ResponseEntity.ok(
+            userService.updateProfile(userId, request));
+}
+
 }

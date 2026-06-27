@@ -3,7 +3,8 @@ package com.project.fitness.service;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
-
+import com.project.fitness.dto.UserProfileRequest;
+import com.project.fitness.dto.UserProfileResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -70,5 +71,60 @@ public class UserService {
             }
             return user;
   }
+public UserProfileResponse getProfile(String userId) {
 
+    User user = userRepository.findById(userId)
+            .orElseThrow(() ->
+                    new RuntimeException("User not found"));
+
+    return UserProfileResponse.builder()
+            .id(user.getId())
+            .firstName(user.getFirstName())
+            .lastName(user.getLastName())
+            .email(user.getEmail())
+            .age(user.getAge())
+            .height(user.getHeight())
+            .weight(user.getWeight())
+            .gender(user.getGender())
+            .fitnessGoal(user.getFitnessGoal())
+            .experienceLevel(user.getExperienceLevel())
+            .bmi(user.getBMI())
+            .activityLevel(user.getActivityLevel())
+.dietPreference(user.getDietPreference())
+            .build();
+}
+
+public UserProfileResponse updateProfile(
+        String userId,
+        UserProfileRequest request) {
+
+    User user = userRepository.findById(userId)
+            .orElseThrow(() ->
+                    new RuntimeException("User not found"));
+
+    user.setAge(request.getAge());
+    user.setHeight(request.getHeight());
+    user.setWeight(request.getWeight());
+    user.setGender(request.getGender());
+    user.setFitnessGoal(request.getFitnessGoal());
+    user.setExperienceLevel(request.getExperienceLevel());
+    user.setActivityLevel(request.getActivityLevel());
+
+    user.setDietPreference(request.getDietPreference());
+    User savedUser = userRepository.save(user);
+
+    return UserProfileResponse.builder()
+            .id(savedUser.getId())
+            .firstName(savedUser.getFirstName())
+            .lastName(savedUser.getLastName())
+            .email(savedUser.getEmail())
+            .age(savedUser.getAge())
+            .height(savedUser.getHeight())
+            .weight(savedUser.getWeight())
+            .gender(savedUser.getGender())
+            .fitnessGoal(savedUser.getFitnessGoal())
+            .experienceLevel(savedUser.getExperienceLevel())
+            .bmi(savedUser.getBMI())
+            .build();
+}
 }
