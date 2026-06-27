@@ -48,19 +48,29 @@ public class UserService {
     User savedUser = userRepository.save(user);
     return mapToResponse(savedUser);
   }
+public UserResponse mapToResponse(User savedUser) {
 
-  public UserResponse mapToResponse(User savedUser) {
     UserResponse response = new UserResponse();
+
     response.setId(savedUser.getId());
     response.setFirstName(savedUser.getFirstName());
     response.setLastName(savedUser.getLastName());
     response.setEmail(savedUser.getEmail());
+
     response.setCreatedAt(savedUser.getCreatedAt());
     response.setUpdatedAt(savedUser.getUpdatedAt());
 
-    return response;
-  }
+    response.setAge(savedUser.getAge());
+    response.setHeight(savedUser.getHeight());
+    response.setWeight(savedUser.getWeight());
+    response.setGender(savedUser.getGender());
+    response.setFitnessGoal(savedUser.getFitnessGoal());
+    response.setExperienceLevel(savedUser.getExperienceLevel());
+    response.setActivityLevel(savedUser.getActivityLevel());
+    response.setDietPreference(savedUser.getDietPreference());
 
+    return response;
+}
   public User authenticate(LoginRequest loginRequest) {
   User user = userRepository.findByEmail(loginRequest.getEmail());
             if (user == null)
@@ -114,17 +124,23 @@ public UserProfileResponse updateProfile(
     User savedUser = userRepository.save(user);
 
     return UserProfileResponse.builder()
-            .id(savedUser.getId())
-            .firstName(savedUser.getFirstName())
-            .lastName(savedUser.getLastName())
-            .email(savedUser.getEmail())
-            .age(savedUser.getAge())
-            .height(savedUser.getHeight())
-            .weight(savedUser.getWeight())
-            .gender(savedUser.getGender())
-            .fitnessGoal(savedUser.getFitnessGoal())
-            .experienceLevel(savedUser.getExperienceLevel())
-            .bmi(savedUser.getBMI())
-            .build();
-}
+        .id(savedUser.getId())
+        .firstName(savedUser.getFirstName())
+        .lastName(savedUser.getLastName())
+        .email(savedUser.getEmail())
+
+        .age(savedUser.getAge())
+        .height(savedUser.getHeight())
+        .weight(savedUser.getWeight())
+
+        .gender(savedUser.getGender())
+        .fitnessGoal(savedUser.getFitnessGoal())
+        .experienceLevel(savedUser.getExperienceLevel())
+
+        .activityLevel(savedUser.getActivityLevel())
+        .dietPreference(savedUser.getDietPreference())
+
+        .bmi(savedUser.getBMI())
+        .build();
+        }
 }

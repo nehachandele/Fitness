@@ -17,4 +17,19 @@ public class UserResponse {
   private String password;
   private LocalDateTime createdAt;
   private LocalDateTime updatedAt;
+  private Integer age;
+
+private Double height;
+
+private Double weight;
+
+private String gender;
+
+private String fitnessGoal;
+
+private String experienceLevel;
+
+private String activityLevel;
+
+private String dietPreference;
 }

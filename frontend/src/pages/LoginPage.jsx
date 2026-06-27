@@ -46,6 +46,19 @@ const LoginPage = () => {
       const response = await loginUser(formData);
 
       saveAuth(response);
+      const user = response.data.user;
+
+if (
+    user.age == null ||
+    user.height == null ||
+    user.weight == null ||
+    user.gender == null ||
+    user.fitnessGoal == null
+) {
+    navigate("/profile/setup");
+} else {
+    navigate("/dashboard");
+}
 
       toast.success("Login Successful", {
         style: {
